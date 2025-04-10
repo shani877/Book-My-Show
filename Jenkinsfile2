@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        SCANNER_HOME = tool 'sonar-server'
+        SCANNER_HOME = tool 'sonarqube-scanner'
         DOCKER_IMAGE = 'shani877/bms:latest'
         EKS_CLUSTER_NAME = 'BMS-eks'
         AWS_REGION = 'eu-west-3'
@@ -29,9 +29,9 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube-scanner') {
+                withSonarQubeEnv('sonar-server') {
                     sh ''' 
-                    $SCANNER_HOME/bin/sonar-scanner \
+                    $SCANNER_HOME/bin/sonarqube-scanner \
                         -Dsonar.projectName=BMS \
                         -Dsonar.projectKey=BMS
                     '''
@@ -42,7 +42,7 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
                 }
             }
         }
