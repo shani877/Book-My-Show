@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
+        SCANNER_HOME = tool 'sonar-server'
         DOCKER_IMAGE = 'shani877/bms:latest'
         EKS_CLUSTER_NAME = 'BMS-eks'
         AWS_REGION = 'eu-west-3'
